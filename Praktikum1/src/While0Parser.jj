@@ -8,8 +8,8 @@ public class While0Parser{  public static void main(String args []) throws Par
     	try
 		{
 		    System.out.println("Working Directory = " + System.getProperty("user.dir"));
-            //String file = "./While0Programs/AusAufgabe18.while0";
-			String file = "./While0Programs/AusAufgabe18MitFehler.while0";
+            String file = "./While0Programs/AusAufgabe18.while0";
+			//String file = "./While0Programs/AusAufgabe18MitFehler.while0";
 			FileInputStream inpStream = new FileInputStream(file);
 			While0Parser parser = new While0Parser(inpStream);
 			parser.enable_tracing();
