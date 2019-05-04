@@ -1,6 +1,7 @@
 /**
  * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
- */options{  static = true;}PARSER_BEGIN(While0Parser)
+ */options{  static = true;
+  //debug_parser = true;}PARSER_BEGIN(While0Parser)
 
 import java.io.*;
 public class While0Parser{  public static void main(String args []) throws ParseException  {
@@ -11,6 +12,7 @@ public class While0Parser{  public static void main(String args []) throws Par
 			String file = "./While0Programs/AusAufgabe18MitFehler.while0";
 			FileInputStream inpStream = new FileInputStream(file);
 			While0Parser parser = new While0Parser(inpStream);
+			parser.enable_tracing();
 			parser.program();
 
 			System.out.println("WHILE0 Programm ok.");
@@ -43,7 +45,13 @@ public class While0Parser{  public static void main(String args []) throws Par
 void program() :{}{
   <IDENT> <LPARENT> inpvars() <SEMICOLON> outpvars() <RPARENT> <SEMICOLON>
   vars() <SEMICOLON>
-  statement()}
+  statement()
+  <EOF> 
+  // EOF wichtig, da das File nach unserem Programm zuende sein soll.
+  // Sonst passiert es, dass wenn bei Statement(); Statement(); Statement();
+  // das zweite Semikolon fehlt, dass der Parser einfach mit erfolg aufhört.
+  // (Da ja auf oberster Ebene nach einem Statement ohne folgendem Semikolon das Programm vorbei ist.)
+  // Der Parser würde das Programm also nur ein Teilprogramm lesen und dieses als OK beurteilen.}
 
 void inpvars() :
 {}

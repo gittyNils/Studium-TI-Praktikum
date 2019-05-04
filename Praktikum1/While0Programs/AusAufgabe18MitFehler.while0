@@ -13,7 +13,7 @@ begin
 end;
 H2 = 0;
 
-Y = Y + 1;
+Y = Y + 1
 
 while H1 != H2 do						
 begin
