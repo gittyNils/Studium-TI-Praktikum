@@ -1,0 +1,80 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options{  static = true;}PARSER_BEGIN(While0Parser)
+
+import java.io.*;
+public class While0Parser{  public static void main(String args []) throws ParseException  {
+    	try
+		{
+		    System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            //String file = "./While0Programs/AusAufgabe18.while0";
+			String file = "./While0Programs/AusAufgabe18MitFehler.while0";
+			FileInputStream inpStream = new FileInputStream(file);
+			While0Parser parser = new While0Parser(inpStream);
+			parser.program();
+
+			System.out.println("WHILE0 Programm ok.");
+		}
+		catch (Exception ex)
+		{
+			System.out.println("WHILE0 Programm fehlerhaft.");
+			System.out.println(ex.toString());
+		}  }}PARSER_END(While0Parser)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN :
+{
+  < LPARENT : "(" >
+| < RPARENT : ")" >
+| < SEMICOLON : ";" >
+| < COMMA : "," >
+| < ASSIGN : "=" >
+| < PLUS : "+" >
+| < ZERO : "0" >
+| < ONE : "1" >
+| < NOTEQUAL : "!=" >
+| < IN : "in" >
+| < OUT : "out" >
+| < VAR : "var" >
+| < WHILE : "while" >
+| < DO : "do" >
+| < BEGIN : "begin" >
+| < END : "end" >
+| < IDENT : (["a"-"z"]|["A"-"Z"]|["0"-"9"])+ >
+}
+
+void program() :{}{
+  <IDENT> <LPARENT> inpvars() <SEMICOLON> outpvars() <RPARENT> <SEMICOLON>
+  vars() <SEMICOLON>
+  statement()}
+
+void inpvars() :
+{}
+{
+  <IN> <IDENT> (<COMMA> <IDENT>)*}
+
+void outpvars() :
+{}
+{
+  <OUT> <IDENT>
+}
+
+void vars() :
+{}
+{
+  <VAR> <LPARENT> (<IDENT> (<COMMA> <IDENT>)* )? <RPARENT>
+}
+void statement() :
+{}
+{
+   (assign() | while_statement()) (<SEMICOLON> statement())?
+}
+
+void assign() :
+{}
+{
+   <IDENT> <ASSIGN> (<ZERO> | <IDENT> <PLUS> <ONE>)
+}
+
+void while_statement() :
+{}
+{
+   <WHILE> <IDENT> <NOTEQUAL> <IDENT> <DO> <BEGIN> statement() <END>   
+}
