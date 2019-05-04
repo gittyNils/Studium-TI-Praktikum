@@ -1,0 +1,130 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options{  static = true;}PARSER_BEGIN(While0ToURM)
+import java.io.*;
+
+public class While0ToURM{
+
+  private static CompilerHelper comp;
+    public static void main(String args []) throws ParseException  {   		try
+		{
+			comp = new CompilerHelper();
+		  
+		    System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            String file = "./While0Programs/add.while0";
+			//String file = "./While0Programs/AusAufgabe18MitFehler.while0";
+			FileInputStream inpStream = new FileInputStream(file);
+			While0ToURM parser = new While0ToURM(inpStream);
+			parser.program();
+			System.out.println("WHILE0 Programm ok.");
+			
+			//comp.PrintProgram();
+			comp.PrintProgramForSimulator();
+
+		}
+		catch (Exception ex)
+		{
+			System.out.println("WHILE0 Programm fehlerhaft.");
+			System.out.println(ex.toString());
+		}  }}PARSER_END(While0ToURM)SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+}
+
+
+
+TOKEN :
+{
+  < LPARENT : "(" >
+| < RPARENT : ")" >
+| < SEMICOLON : ";" >
+| < COMMA : "," >
+| < ASSIGN : "=" >
+| < PLUS : "+" >
+| < ZERO : "0" >
+| < ONE : "1" >
+| < NOTEQUAL : "!=" >
+| < IN : "in" >
+| < OUT : "out" >
+| < VAR : "var" >
+| < WHILE : "while" >
+| < DO : "do" >
+| < BEGIN : "begin" >
+| < END : "end" >
+| < IDENT : (["a"-"z"]|["A"-"Z"]|["0"-"9"])+ >
+}
+
+
+
+void program() :
+{
+  Token t;
+}
+{
+  // das image der generierten Token-Klasse ist der Text, der gematcht wurde.
+  t = <IDENT> { comp.SetProgName(t.image); } <LPARENT> inpvars() <SEMICOLON> outpvars() <RPARENT> <SEMICOLON>
+  vars() <SEMICOLON>
+  { comp.AddIdentMapAsComment();  }
+  statement()
+  <EOF> 
+  // EOF wichtig, da das File nach unserem Programm zuende sein soll.
+  // Sonst passiert es, dass wenn bei Statement(); Statement(); Statement();
+  // das zweite Semikolon fehlt, dass der Parser einfach mit erfolg aufhört.
+  // (Da ja auf oberster Ebene nach einem Statement ohne folgendem Semikolon das Programm vorbei ist.)
+  // Der Parser würde das Programm also nur ein Teilprogramm lesen und dieses als OK beurteilen.
+}
+
+void inpvars() :
+{
+  Token t;
+}
+{
+  <IN> t = <IDENT> { comp.AddIdent(t.image); } (<COMMA> t = <IDENT> { comp.AddIdent(t.image); })*
+}
+
+void outpvars() :
+{
+  Token t;
+}
+{
+  <OUT> t = <IDENT> { comp.AddOutIdent(t.image); }
+}
+
+void vars() :
+{
+  Token t;
+}
+{
+  <VAR> <LPARENT> (t = <IDENT> { comp.AddIdent(t.image); } (<COMMA> t = <IDENT> { comp.AddIdent(t.image); })* )? <RPARENT>
+}
+
+void statement() :
+{}
+{
+   (assign() | while_statement()) (<SEMICOLON> statement())?
+}
+
+void assign() :
+{
+  Token tLeft;
+  Token tRight;
+}
+{
+   tLeft = <IDENT> <ASSIGN>
+   (
+     <ZERO> { comp.AssignZero(tLeft.image); }
+	| tRight = <IDENT> <PLUS> <ONE> { comp.AssignPlusOne(tLeft.image, tRight.image); }
+   )
+}
+
+void while_statement() :
+{
+  Token tLeft;
+  Token tRight;
+}
+{
+   <WHILE> tLeft= <IDENT> <NOTEQUAL> tRight = <IDENT> <DO> <BEGIN> { comp.WhileBegin(tLeft.image, tRight.image); } statement() <END> { comp.WhileEnd(); } 
+}
