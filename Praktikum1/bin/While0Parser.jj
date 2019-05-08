@@ -56,7 +56,7 @@ public class While0Parser{  public static void main(String args []) throws Par
 void inpvars() :
 {}
 {
-  <IN> <IDENT> (<COMMA> <IDENT>)*}
+  <IN> (<IDENT> (<COMMA> <IDENT>)* )?}
 
 void outpvars() :
 {}

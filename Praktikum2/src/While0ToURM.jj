@@ -82,7 +82,7 @@ void inpvars() :
   Token t;
 }
 {
-  <IN> t = <IDENT> { comp.AddIdent(t.image); } (<COMMA> t = <IDENT> { comp.AddIdent(t.image); })*
+  <IN> ( t = <IDENT> { comp.AddIdent(t.image); } (<COMMA> t = <IDENT> { comp.AddIdent(t.image); })* )?
 }
 
 void outpvars() :

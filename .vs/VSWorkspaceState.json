@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Praktikum1",
-    "\\Praktikum1\\src"
+    "\\Praktikum1\\src",
+    "\\Praktikum2",
+    "\\Praktikum2\\src"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\Praktikum2\\src\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
